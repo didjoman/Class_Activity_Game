@@ -54,7 +54,7 @@ angular
   var questions = [
     {title: 'title', question: 'The question ...', type: 'single'},
     {title: 'title2', question: 'The question2 ...', type: 'single'},
-    {title: 'title3', question: 'The question3 ...', type: 'multi'},
+    /*{title: 'title3', question: 'The question3 ...', type: 'multi'},
     {title: 'title4', question: 'The question4 ...', type: 'multi'},
     {title: 'title5', question: 'The question5 ...', type: 'multi'},
     {title: 'title6', question: 'The question6 ...', type: 'multi'},
@@ -66,7 +66,7 @@ angular
     {title: 'title12', question: 'The question12 ...', type: 'multi'},
     {title: 'title13', question: 'The question13 ...', type: 'multi'},
     {title: 'title14', question: 'The question14 ...', type: 'multi'},
-    {title: 'title15', question: 'The question15 ...', type: 'multi'},
+    {title: 'title15', question: 'The question15 ...', type: 'multi'},*/
   ];
   var size = 10;
 

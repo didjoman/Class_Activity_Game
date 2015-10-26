@@ -139,6 +139,18 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	  	$modalInstance.dismiss('cancel');
 	};
 })
+.directive('playbtn', function() {
+  return {
+    restrict: 'E',
+    controller: 'PlayBtnCtrl',
+    templateUrl: 'scripts/questions/play_btn.html'
+  };
+})
+.controller('PlayBtnCtrl', function($scope, $uibModal, $log, QuestionsService) {
+	$scope.deactivated = function() {
+		return QuestionsService.getCurrentQuestion() === undefined;
+	}
+})
 .filter('questionPlayers', function(PlayersService, TurnsService) {
   	return function(input, isMultiplayer) {
 	    input = input || {};
@@ -149,7 +161,8 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 
 	   	var out= [];
 	   	for (var i = input.length - 1; i >= 0; i--) {
-	   		if(input[i] && input[i].name === TurnsService.getCurrentTurn().name){
+	   		if(input[i] && TurnsService.getCurrentTurn() && 
+	   			input[i].name === TurnsService.getCurrentTurn().name){
 	   			out.push(input[i]);
 	   		}
 	   	}

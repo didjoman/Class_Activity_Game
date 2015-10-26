@@ -263,6 +263,10 @@ $light-grey: #F7F7F7;
   }
 }
 
+.cool-btn-deactivated{
+  background-image: url('../images/texture5.png');
+}
+
 .dice-container{
   float: left;
   width: 180px;
@@ -291,6 +295,7 @@ $light-grey: #F7F7F7;
     ul{
       list-style-type: none;
       padding-left: 10px;
+      height: 135px;
     }
     li{
       float: left;
