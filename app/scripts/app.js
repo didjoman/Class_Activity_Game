@@ -46,6 +46,7 @@ angular
     this.game.newGame(teams, gameSize, questions);
   };
 
+  // MAIN :
   var teams = [
     {name:'Heroes', color:'#199E8F', img:'spiderman.png', winImg: 'spidey_big.png'}, //spidey.png
     {name:'Vilains', color:'#9E1928', img:'venom2.png', winImg: 'venom_big.png'}
