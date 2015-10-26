@@ -1,0 +1,24 @@
+<div id="content" ng-controller='GameController as ctrl'>
+  <img ng-show="ctrl.game.questionsServ.roundWon" 
+        ng-src="../images/{{ctrl.game.questionsServ.roundWinner.winImg || 'default.png'}}" 
+        alt="" 
+        id="winner-img"/>
+
+  <!-- Now the variable: ctrl refers to the GameController -->
+  <div id="heading" class="row">
+    <div dice class="dice-container">
+      <h2>Deck</h2>
+      <div><!--<img src="images/load.gif" />--></div><br /><br />
+      <button class="cool-btn" ng-click="ctrl.game.play()"><span class="btn-txt">Play!</span></button>
+    </div>
+    <div turns ng-model='ctrl.game.players' class="scores-container"></div>
+  </div>
+
+  <div id="game-container">
+    <h2>Game</h2>
+    <div grid ng-model='ctrl.game' class="row"></div>
+  </div>
+</div>
+<div style="clear: both; height: 1px; width: 1px;"></div>
+
+

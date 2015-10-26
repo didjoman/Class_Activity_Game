@@ -1,0 +1,514 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+@import "../bower_components/sass-css3-mixins/css3-mixins.scss";
+
+@font-face {
+    font-family: courg;
+    src: url(../fonts/courg.ttf);
+}
+
+@font-face {
+    font-family: kau;
+    src: url(../fonts/kau.ttf);
+}
+
+button:active{
+  outline: none !important;
+}
+
+.handwritten{
+  font-family: kau;
+  font-size: 2em;
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+html{
+  background-image: url('../images/background0.jpg'); /* 3 et 6*/
+  background-position: center;
+  height: 100%;
+}
+
+#global-container{
+  background-image: none;
+  background-color: rgba(0,0,0,0.3);
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  padding: 0;
+  background-image: url('../images/background0.jpg'); /* 3 et 6*/
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.navbar-default .navbar-brand{
+  color: white !important;
+}
+
+.navbar, .footer .container, h2{
+  color: white !important;
+  @include text-shadow(2px, 0px, 3px, black);
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: white !important;
+  background-color: rgba(0,0,0, 0.5);
+}
+
+.navbar, .navbar-default .navbar-nav{
+  margin-bottom: 0px;
+  border-bottom: none;
+  border: 1px solid rgba(0,0,0,0.9) !important;
+  background-color: rgba(0,0,0, 0.6);
+  color: white !important;
+}
+
+h2{
+  padding: 0px 5px 5px 15px;
+  margin-top: 20px; 
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+  border: none;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding-top: 19px;
+  color: #777;
+  /* border-top: 1px solid #e5e5e5; */
+  border: 1px solid rgba(0,0,0,0.9) !important;
+  background-color: rgba(0,0,0, 0.6);
+}
+
+.scores-container h2, .dice-container h2, #game-container h2{
+  background-color: rgba(0,0,0, 0.6);
+  @include border-radius(5px); 
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 0px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.box {
+  width:40px;
+  height:40px;
+  background-color: blue;
+}
+
+$width: 820px;          /* The width of the whole board */
+$tile-count: 6;         /* The number of tiles per row/column */
+$tile-padding: 15px;    /* The padding between tiles */
+$tile-size: ($width - $tile-padding * ($tile-count + 1)) / $tile-count;
+
+$cell_color: #DAE3E6;
+
+$nice: #A5E342;
+$dark-nice: #8FC439;
+$bad: #E34254;
+
+$heroes: #42E3D0;
+$villains: #E34255;
+
+$light-grey: #F7F7F7;
+
+.nice{
+  color: $nice;
+}
+
+.bad{
+  color: $bad;
+}
+
+#heading{
+  margin: 0px !important;
+}
+
+#winner-img{
+  z-index: 10000; 
+  position: absolute; 
+  top: 0px; 
+  margin: auto; 
+  text-align: center; 
+  height: 100%; 
+  max-width: 100%;
+}
+
+
+/* When the picture disappear */
+#winner-img.ng-hide-add {
+    transition: 0.5s linear opacity;
+    opacity: 1;
+}
+
+
+#winner-img.ng-hide-add-active {
+    opacity: 0;
+}
+
+/* When the picture appear */
+#winner-img.ng-hide-remove {
+    transition: 0.5s linear opacity;
+    opacity: 0;
+}
+
+#winner-img.ng-hide-remove-active {
+    opacity: 1;
+}
+
+.cool-btn{
+  /* border: 3px solid white; */
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+
+  @include box-shadow(0px, 2px, 3px, black);
+  /* @include background-gradient(#07A319, #33FF00); */
+  background: linear-gradient($dark-nice, $nice);
+  background-image: url('../images/texture4.png');
+  @include border-radius(5px); 
+  font-size: 1.5em;
+  font-weight: bolder;
+  color: white;
+  padding: 5px 30px 5px 30px;
+}
+
+.cool-btn:active{
+  /* border: 3px solid white; */
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  .btn-txt{
+    margin-top: -2px;
+    margin-left: -1px;
+  }
+}
+
+.dice-container{
+  float: left;
+  width: 180px;
+  height: 100px;
+  display: block;
+  text-align: center;
+
+  h2{
+    text-align: left;
+  }
+}
+
+@mixin small-box() {
+      text-align: center;
+      border: 2px solid white;
+      @include box-shadow(0px, 2px, 3px, black);
+      @include background-gradient(#DEDEDE, #FAFAFA);
+      background: linear-gradient(#DEDEDE, #FAFAFA);
+      @include border-radius(10px); 
+}
+
+.scores-container{
+  float: right;
+  #scores{
+    width: 500px;
+    ul{
+      list-style-type: none;
+      padding-left: 10px;
+    }
+    li{
+      float: left;
+      margin: 20px 5px 0px 5px;
+      width: 80px;
+      height: 110px;
+      display: block;
+      text-align: center;
+      border: 2px solid white;
+      @include box-shadow(0px, 2px, 3px, black);
+      /* @include background-gradient(#DEDEDE, #FAFAFA); */
+      background: linear-gradient(#DEDEDE, #FFFFFF);
+      background-image: url('../images/texture3.png');
+      @include border-radius(10px); 
+    }
+    .player-name{
+      font-size: 1.3em;
+    }
+    .score-number{
+      font-size: 2em;
+      font-weight: bold;
+      margin: auto;
+      text-align: center;
+    }
+    .score-img{
+      width: 70px;
+      height: 70px;
+      margin: auto;
+    }
+
+    .selected-player{
+      /* border: 2px solid black; */
+        margin-top: 0px;
+        width: 100px;
+        height: 130px;
+        font-size: 1.25em;
+
+        @include box-shadow(0px, 6px, 5px, rgba(0,0,0,0.5));
+        
+        .score-img{
+          width: 80px !important;
+          height: 80px !important;
+        }
+    }
+  }
+
+}
+
+#game {
+  position: relative;
+  width: $width;
+  /* height: $width; /* The gameboard is a square */
+  height: 100%;
+
+  .grid-container {
+    z-index: 1;           /* IMPORTANT to set the z-index for layering */
+    margin: 0 auto;       /* center */
+    list-style-type: none;
+
+    .grid-cell {
+      width: $tile-size;              /* set the cell width */
+      height: $tile-size;             /* set the cell height */
+      float: left;
+      margin-bottom: $tile-padding;   /* the padding between lower cells */
+      margin-right: $tile-padding;    /* the padding between the right cell */
+
+      border: 2px solid white;
+      @include box-shadow(0px, 2px, 3px, black);
+      @include background-gradient(#DEDEDE, #FAFAFA);
+      background: linear-gradient(#DEDEDE, #FAFAFA);
+      background-image: url('../images/texture2.png');
+      @include border-radius(10px);
+
+      span{ /*Background-numbers */
+        width: 100%;
+        height: 100%;
+        line-height: 0px;
+        display: inline-block; 
+        font-size: 5em; 
+        margin: auto;
+        margin-bottom: -5em; 
+        margin-top: 0.8em; 
+        opacity: 0.3; 
+        text-align: center;
+      }
+
+      ul{ 
+        list-style-type: none;
+        margin-top: -60%;
+        padding-left: 0px;
+        li{
+          width: 45px;
+          height: 45px;
+          float: left;
+          padding-top: 5px;
+          padding-left: 0px;
+
+          img{
+            width: 75px;
+            height: 75px;
+            z-index: 10000;
+          }
+        }
+
+        /* The starting CSS styles for the enter animation */
+        .player.ng-move,
+        .player.ng-enter, 
+        .player.ng-leave{
+          transition: 0.3s linear all;
+        }
+
+        /* The finishing CSS styles for the enter animation */
+        .player.ng-leave,
+        .player.ng-enter.ng-enter-active{
+          opacity: 1;
+        }
+
+        .player.ng-enter, 
+        .player.ng-leave.ng-leave-active {
+          opacity: 0;
+        }
+      }
+    }
+
+  }
+  .player-container {
+    position: absolute;
+    z-index: 2; 
+
+    .player {
+      width: $tile-size;        /* tile width */
+      height: $tile-size;       /* tile height */
+    }
+  }
+}
+
+
+.small-box{
+  width: 70px;
+  height: 90px;
+  @include small-box();
+
+  .score-number{
+      font-size: 4em;
+      font-weight: bold;
+      margin: auto;
+      text-align: center;
+  }
+}
+
+.modal-header{
+  background-image: url('../images/question_background7.png');
+  background-position: top left;
+  background-repeat: no-repeat;
+  .close{
+    line-height: 2em;
+    margin-top: -20px;
+    padding: 20px;
+    span{
+      padding-top: 20px;
+      line-height: 1em;      
+    }
+  }
+  .small-box{
+    float: left;
+    width: 30px;
+    height: 40px;
+    margin-left: 5px;
+    img{
+      width: 25px;
+      height: 25px;
+      margin-left: -5px;
+      margin-top: -5px;
+    }
+  }
+}
+
+.modal-body{
+  padding-top: 0px;
+  h2{
+    float: left;
+    margin-right: 20px;
+  }
+  .question{
+    padding: 20px 0px 0px 20px;
+  }
+}
+
+.modal-footer{
+  background-color: $light-grey;
+  text-align: center !important;
+  @include border-radius(10px); 
+  background-image: url('../images/question_background2.png');
+  background-position: right;
+  background-repeat: no-repeat;
+
+  h2{
+    float: left;
+  }
+  .result{
+    /* width: 300px; */
+    margin: auto;
+    margin-top: 0px;
+
+    button:active{
+      margin-top: 3px;
+      span{
+        margin-top: 15px;
+      }
+    }
+
+    .small-box{
+      margin-right: 5px;
+      img{
+        width: 70px;
+        height: 75px;
+        margin-left: -7px;
+      }
+    }
+  }
+}

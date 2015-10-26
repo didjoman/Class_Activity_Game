@@ -1,0 +1,43 @@
+<div class="modal-header handwritten">
+	<button type="button" class="close"  ng-click="cancel()" aria-label="Close">
+		<span aria-hidden="true" >&times;</span>
+	</button>
+	<button class="small-box score-number" ng-repeat="player in players | questionPlayers:question.type" >
+		<img ng-src="images/{{(player && player.img) || 'default.png'}}" />
+	</button>
+    <h3 class="modal-title">&nbsp;&nbsp;{{question.title}}</h3>
+</div>
+
+<div class="modal-body">
+
+	<h2>Question:</h2>
+	<p class="question handwritten">
+		{{question.question}}
+	</p>
+</div>
+
+
+<div class="modal-footer">
+	<h2>Résultat:</h2> 
+	<!-- Points attribution for single player question -->
+	<div class="result" ng-if="question.type === 'single'">
+	    <button class="small-box score-number" ng-click="addPointToPlayerByName(turn().name, 0)">
+	    	<span class="score-number bad">0</span>
+	    </button>
+	    <button class="small-box score-number" ng-click="addPointToPlayerByName(turn().name, 1)">
+	    	<span class="score-number nice">
+	    		<span style="font-size: 0.5em; margin-top: -20px; font-weight: bold;">+</span>1
+	    	</span>
+	    </button>
+    </div>
+
+	<!-- Points attribution for multi-player question -->
+	<div class="result" ng-if="question.type === 'multi'">
+		<button class="small-box score-number" ng-click="skip()">
+			<img style="padding: 7px;" src="images/stop2.png"/>
+	    </button>
+	    <button class="small-box score-number" ng-click="addPointToPlayerByName(player.name,1)" ng-repeat="player in players"  ng-if="player.name !== 'All'">
+			<img ng-src="images/{{player.img}}"/>
+	    </button>
+    </div>
+</div>

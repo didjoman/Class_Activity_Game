@@ -1,0 +1,12 @@
+<div id="scores">
+  <h2>Turns</h2>
+  <ul> 
+    <li ng-repeat="player in data.players track by $index"
+          ng-class="getCurrentPlayer().name === player.name ? 'selected-player' : ''">
+    	<strong class="player-name" style="color: {{player.color}};">{{player.name}}</strong> <br/>
+    	<img ng-src="images/{{player.img}}" class="score-img"/><br/>
+    	<!-- <span class="score-number" style="color: {{player.color}};">{{player.score}}</span> -->
+    </li>
+    <br ng-repeat-end ng-if="$index == 3"/>
+  </ul>
+</div>
