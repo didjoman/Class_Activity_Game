@@ -1,5 +1,6 @@
+"use strict";
 angular.module('Turns', ['Player', 'Questions'])
-.service('TurnsService', function($log, $timeout, QuestionsService, PlayersService, _) {
+.service('TurnsService', function($log, $timeout, QuestionsService, PlayersService) {
 		
 	var service = this;
 	var playerId = 0;
@@ -21,7 +22,7 @@ angular.module('Turns', ['Player', 'Questions'])
 				console.log(playerId+' '+players[playerId]+' '+PlayersService.getPlayer(0));
 				service.turns.push(players[playerId++]);
 			}
-		};
+		}
 	};
 
 	this.newTurn = function(){

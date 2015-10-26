@@ -44,21 +44,8 @@ angular
 
   this.newGame = function(players, gameSize, questions) {
     this.game.newGame(teams, gameSize, questions);
-    this.startGame();
   };
 
-  this.startGame = function() {
-    var self = this;
-  };
-
-  // MAIN :
-  /*
-  var teams = [{name:'Dauntless', color:'orange', img:'dauntless.png'}, 
-                {name:'Erudite', color:'blue', img:'erudite.png'}, 
-                {name:'Amity', color:'red', img:'amity.png'}, 
-                {name:'Candor', color:'black', img:'candor.png'},
-                {name:'Abnegation', color:'grey', img:'abnegation.png'}];
-*/
   var teams = [
     {name:'Heroes', color:'#199E8F', img:'spiderman.png', winImg: 'spidey_big.png'}, //spidey.png
     {name:'Vilains', color:'#9E1928', img:'venom2.png', winImg: 'venom_big.png'}
@@ -92,7 +79,7 @@ angular
     var timeInterval = 20000; // ms
     var halfInt = timeInterval / 2;
 
-    if(nbCalled % 2 == 0){
+    if(nbCalled % 2 === 0){
       document.getElementsByTagName('body')[0].style.backgroundImage = 'url(\'images/background'+i+'.jpg\')';
       window.setTimeout(function(){ setBackground(((i+1)%20), nbCalled+1); }, halfInt);
     }
