@@ -1,3 +1,4 @@
+"use strict";
 angular.module('Questions', ['Player', 'Grid', 'Turns'])
 .service('QuestionsService', function($uibModal, $log, $timeout, PlayersService, _) {
 	var service = this;
@@ -17,7 +18,7 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 
 	this.getCurrentQuestionId = function(){
 		return service.currentQuestionId;
-	}
+	};
 
 	this.increaseQuestionId = function(){
 		++(service.currentQuestionId);
@@ -25,37 +26,38 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 
 	this.getRemainingQuestions = function(){
 		return _.slice(service.questions, 0, service.questions.length);
-	}
+	};
 
 	this.getNbRemainingQuestions = function(){
 		return service.questions.length - (service.currentQuestionId + 1);
-	}
+	};
 
 	this.getCurrentQuestion = function(){
-		return service.getQuestion(service.currentQuestionId)
-	}
+		return service.getQuestion(service.currentQuestionId);
+	};
 
 	this.getQuestion = function(id){
 		return (id>=0 && id < service.questions.length) ?
 			service.questions[id] :
 			undefined;
-	}
+	};
 
 	this.getQuestions = function(){
 		return service.questions;
-	}
+	};
 
 	this.isCurrentQuestionMultiPlayer = function(){
 		return service.isQuestionMultiPlayer(service.getCurrentQuestionId());
-	}
+	};
 
 	this.isQuestionMultiPlayer = function(id){
 		var q = service.getQuestion(id);
-		if(q === undefined) 
+		if(q === undefined){
 			return undefined;
+		}
 
 		return q.type === 'multi';
-	}
+	};
 
 	this.winRound = function(playerId){
 		service.data.roundWinner = PlayersService.getPlayer(playerId);
@@ -70,9 +72,9 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 
 	this.containsMultiPlayerQuestions = function(){
 		return _.find(service.questions, function(q) {
-  				return chr.type === 'multi';
+  				return q.type === 'multi';
 				}) !== -1;
-	}
+	};
 
   	this.open = function (size, cb) {
     	var modalInstance = $uibModal.open({
@@ -116,13 +118,6 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 		$modalInstance.dismiss('cancel');
 	};
 
-/*
-	$scope.addPoint = function(nbPoints){
-		$scope.addPointToPlayerById(PlayersService.getCurrentPlayerId(), nbPoints);
-	};
-*/
-
-	// TODO : ajouter enchainements temporels avec des timeout.
 	$scope.addPointToPlayerByName = function(playerName, nbPoints){
 		$scope.addPointToPlayerById(PlayersService.getPlayerId(playerName), nbPoints);
 	};
@@ -134,7 +129,6 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 		}
 		GridService.updatePlayerPos(playerId);
 		QuestionsService.increaseQuestionId();
-		//PlayersService.changePlayer(QuestionsService.isCurrentQuestionMultiPlayer());
 		// Call the callback : (most of time : Turns.endTurn() )
 		cb();
 		$modalInstance.dismiss('cancel');
@@ -146,20 +140,19 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	};
 })
 .filter('questionPlayers', function(PlayersService, TurnsService) {
-  return function(input, isMultiplayer) {
-    input = input || {};
-    isMultiplayer = isMultiplayer || 'single';
-    if(isMultiplayer === 'multi'){
-    	return input;
-    }
+  	return function(input, isMultiplayer) {
+	    input = input || {};
+	    isMultiplayer = isMultiplayer || 'single';
+	    if(isMultiplayer === 'multi'){
+	    	return input;
+	    }
 
-   	var out= [];
-   	for (var i = input.length - 1; i >= 0; i--) {
-   		if(input[i] && input[i].name === TurnsService.getCurrentTurn().name){
-   			out.push(input[i]);
-   		}
-   	};
-    return out;
-    
- };
+	   	var out= [];
+	   	for (var i = input.length - 1; i >= 0; i--) {
+	   		if(input[i] && input[i].name === TurnsService.getCurrentTurn().name){
+	   			out.push(input[i]);
+	   		}
+	   	}
+	    return out;
+ 	};
 });
