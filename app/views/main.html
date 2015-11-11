@@ -1,23 +1,48 @@
 <div id="content" ng-controller='GameController as ctrl'>
-  <img ng-show="ctrl.game.questionsServ.roundWon" 
-        ng-src="../images/{{ctrl.game.questionsServ.roundWinner.winImg || 'default.png'}}" 
-        alt="" 
-        id="winner-img"/>
+  <div>
+    <img ng-show="ctrl.game.questionsServ.roundWon && !ctrl.game.isFinished()" 
+          ng-src="../images/{{ctrl.game.questionsServ.roundWinner.winImg || 'default.png'}}" 
+          alt="" 
+          id="winner-img"/>
 
-  <!-- Now the variable: ctrl refers to the GameController -->
-  <div id="heading" class="row">
-    <div dice class="dice-container">
-      <h2 class="handwritten">Deck</h2>
-      <div><!--<img src="images/load.gif" />--></div><br /><br />
-      <!-- <button class="cool-btn" ng-click="ctrl.game.play()"><span class="btn-txt">Play!</span></button> -->
-      <playbtn></playbtn>
+    <!-- Now the variable: ctrl refers to the GameController -->
+    <div id="heading" class="row">
+      <div dice class="dice-container">
+        <h2 class="handwritten">Deck</h2>
+        <div><!--<img src="images/load.gif" />--></div><br /><br />
+        <!-- <button class="cool-btn" ng-click="ctrl.game.play()"><span class="btn-txt">Play!</span></button> -->
+        <playbtn content="Play!" ng-click="ctrl.game.play()"></playbtn>
+      </div>
+      <div turns ng-model='ctrl.game.players' class="scores-container"></div>
     </div>
-    <div turns ng-model='ctrl.game.players' class="scores-container"></div>
+
+    <div id="game-container">
+      <h2 class="handwritten">Game</h2>
+      <div grid ng-model='ctrl.game' class="row"></div>
+    </div>
+    <div id="dark-screen" ng-show="ctrl.game.questionsServ.roundWon || ctrl.game.isFinished()" ></div>
   </div>
 
-  <div id="game-container">
-    <h2 class="handwritten">Game</h2>
-    <div grid ng-model='ctrl.game' class="row"></div>
+  <div id="win-screen" ng-if="ctrl.game.isFinished()">
+    <img ng-src="../images/{{ctrl.game.getWinner().winImg}}" id="winner" >
+    <div id="win-content"  class="handwritten">
+      <h1>Game Over</h1>
+      <br />
+      <div id="winner-message">
+        <button class="small-box">
+          <img ng-src="images/{{ctrl.game.getWinner().img}}"/>
+        </button>
+        <strong> : Congratulation ! Your team won !</strong>
+      </div>
+      <br />
+
+      <button class="small-box losers" ng-repeat="loser in ctrl.game.getLosers()">
+        <img ng-src="images/{{loser.img}}"/>
+      </button>
+      <strong> : Nice try ;)</strong>
+      <br /><br />
+      <playbtn content="Play again!" ng-click="ctrl.game.reinit()"></playbtn>
+    </div>
   </div>
 </div>
 <div style="clear: both; height: 1px; width: 1px;"></div>

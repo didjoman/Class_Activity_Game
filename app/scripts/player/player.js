@@ -31,6 +31,14 @@ angular.module('Player', ['Questions'])
   		'all.png', 'default.png', '#475559');
   };
 
+  this.reinit = function(){
+    service.data.lastSinglePlayer = undefined;
+    for(var i=0; i < service.data.players.length; ++i){
+      service.data.players[i].score = 0;
+      service.data.players[i].pos = 0;
+    }
+  };
+
  	this.getPlayers = function(){
  		return service.data.players;
  	};
@@ -38,6 +46,17 @@ angular.module('Player', ['Questions'])
  	this.getPlayer = function(id){
  		return service.data.players[id];
  	};
+
+  this.getBestPlayer = function(){
+    var len = service.data.players.length;
+    var bestPlayer = undefined;
+    for (var i = len - 1; i >= 0; i--) {
+      if(bestPlayer === undefined || bestPlayer.score < service.data.players[i].score){
+        bestPlayer = service.data.players[i];
+      }
+    };
+    return bestPlayer;
+  };
 
  	this.getPlayerAll = function(){
  		return service.data.playerAll;

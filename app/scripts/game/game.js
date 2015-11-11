@@ -1,12 +1,13 @@
 "use strict";
 angular.module('Game', ['Grid', 'Player', 'Questions', 'Turns'])
 .service('GameManager', function($q, $timeout, GridService, PlayersService, QuestionsService, TurnsService) {
+  var service = this;
 
   this.grid = GridService.grid;
   this.players = PlayersService.players;
   this.currentPlayer = PlayersService.currentPlayer;
-  this.tiles = GridService.tiles;
   this.gameSize = GridService.getSize();
+  this.scoreMax = 0;
 
   this.questionsServ = QuestionsService.data;
   this.roundWon = QuestionsService.data.roundWon;
@@ -19,17 +20,31 @@ angular.module('Game', ['Grid', 'Player', 'Questions', 'Turns'])
 
     // Create a new game
   this.newGame = function(players, size, questions) {
+    service.scoreMax = size - 1;
     GridService.initGrid(size, players);
     QuestionsService.init(questions);
     TurnsService.init();
-    this.reinit();
   };
 
   // Reset game state
   this.reinit = function() {
-    this.gameOver = false;
-    this.win = false;
-    this.currentScore = 0;
-    this.highScore = 0; // we'll come back to this
+    GridService.reinit();
+    QuestionsService.reinit();
+    TurnsService.reinit();
   };
+
+  this.isFinished = function(){
+    return PlayersService.getBestPlayer().score >= service.scoreMax;
+  };
+
+  this.getWinner = function(){
+    var bestPlayer = PlayersService.getBestPlayer()
+    return (bestPlayer.score >= service.scoreMax) ? bestPlayer : undefined;
+  };
+
+  this.getLosers = function(){
+    return _.filter(PlayersService.getPlayers(), function(p) {
+        return p.score != service.getWinner().score;
+      });
+  }
 });

@@ -201,6 +201,38 @@ $light-grey: #F7F7F7;
   margin: 0px !important;
 }
 
+
+#dark-screen{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,0.7);
+  width: 100%;
+  height: 100%;
+}
+
+/* When the picture disappear */
+#dark-screen.ng-hide-add {
+    transition: 0.5s linear opacity;
+    opacity: 1;
+}
+
+
+#dark-screen.ng-hide-add-active {
+    opacity: 0;
+}
+
+/* When the picture appear */
+#dark-screen.ng-hide-remove {
+    transition: 0.2s linear opacity;
+    opacity: 0;
+}
+
+#dark-screen.ng-hide-remove-active {
+    opacity: 1;
+}
+
+
 #winner-img{
   z-index: 10000; 
   position: absolute; 
@@ -495,6 +527,10 @@ $light-grey: #F7F7F7;
   h2{
     float: left;
   }
+  .points{
+      font-size: 3em;
+  }
+
   .result{
     /* width: 300px; */
     margin: auto;
@@ -511,9 +547,79 @@ $light-grey: #F7F7F7;
       margin-right: 5px;
       img{
         width: 70px;
-        height: 75px;
-        margin-left: -7px;
+        height: 70px;
+        margin: auto; 
       }
     }
   }
 }
+
+#win-screen{
+  display: block;
+  height: 500px;
+  position: fixed;
+  top: 80px;
+  text-align: center;
+  border: 2px solid white;
+  @include box-shadow(0px, 2px, 3px, black);
+  /* @include background-gradient(#DEDEDE, #FAFAFA); */
+  background: linear-gradient(#DEDEDE, #FFFFFF);
+  background-image: url('../images/texture3.png');
+  @include border-radius(10px); 
+  overflow: hidden;
+
+  #winner{
+    height: 120%;
+    margin-top: -10%;
+    opacity: 0.4;
+  }
+
+  #win-content{
+    position: relative;
+    margin-top: -510px;
+    padding: 10px;
+    color: black;
+    
+    h1{
+      font-size: 2em;
+      margin-top: -20px;
+    }
+
+    #winner-message{
+      font-size: 1.3em;
+      .small-box{
+        width: 90px;
+        height: 120px;
+        img{
+          width: 90px;
+          height: 90px;
+        }
+      }
+    }
+
+    .small-box  img{
+      width: 70px;
+      height: 70px;
+      z-index: 10000;
+      margin-left: -5px;
+    }
+
+    .losers{
+      margin-right: 5px;
+    }
+
+    .cool-btn{
+      font-size: 0.8em;
+    }
+  }
+}
+
+/* When the picture appear */
+#win-screen.ng-hide-remove {
+    transition: 10.5s linear opacity;
+    opacity: 0;
+}
+
+#win-screen.ng-hide-remove-active {
+    opacity: 1;
+} 

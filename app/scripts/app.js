@@ -53,9 +53,9 @@ angular
   ];
 
   var questions = [
-    {title: 'title', question: 'The question ...', type: 'single'},
-    {title: 'title2', question: 'The question2 ...', type: 'single'},
-    {title: 'title3', question: 'The question3 ...', type: 'multi'},
+    {title: 'title', question: 'The question ...', type: 'single', points: [1,2,3,4,5,6,10]},
+    {title: 'title2', question: 'The question2 ...', type: 'single', points: 2},
+    {title: 'title3', question: 'The question3 ...', type: 'multi', points: [3]},
     {title: 'title4', question: 'The question4 ...', type: 'multi'},
     {title: 'title5', question: 'The question5 ...', type: 'multi'},
     {title: 'title6', question: 'The question6 ...', type: 'multi'},

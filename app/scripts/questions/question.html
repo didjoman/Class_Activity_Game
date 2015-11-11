@@ -18,15 +18,21 @@
 
 
 <div class="modal-footer">
-	<h2>Résultat:</h2> 
+	<div ng-if="question.type === 'multi'">
+		<h2>Points:</h2> 
+		<strong class="points">{{question.points[question.points.length - 1]}}</strong>
+	</div>
+	
+	<br />
+	<h2>Result:</h2> 
 	<!-- Points attribution for single player question -->
 	<div class="result" ng-if="question.type === 'single'">
 	    <button class="small-box score-number" ng-click="addPointToPlayerByName(turn().name, 0)">
 	    	<span class="score-number bad">0</span>
-	    </button>
-	    <button class="small-box score-number" ng-click="addPointToPlayerByName(turn().name, 1)">
+	    </button> 
+	    <button class="small-box score-number" ng-repeat="point in question.points" ng-click="addPointToPlayerByName(turn().name, point)">
 	    	<span class="score-number nice">
-	    		<span style="font-size: 0.5em; margin-top: -20px; font-weight: bold;">+</span>1
+	    		<span style="font-size: 0.5em; margin-top: -20px; font-weight: bold;">+</span>{{point}}
 	    	</span>
 	    </button>
     </div>
@@ -36,7 +42,7 @@
 		<button class="small-box score-number" ng-click="skip()">
 			<img style="padding: 7px;" src="images/stop2.png"/>
 	    </button>
-	    <button class="small-box score-number" ng-click="addPointToPlayerByName(player.name,1)" ng-repeat="player in players"  ng-if="player.name !== 'All'">
+	    <button class="small-box score-number" ng-click="addPointToPlayerByName(player.name, question.points[question.points.length - 1])" ng-repeat="player in players"  ng-if="player.name !== 'All'">
 			<img ng-src="images/{{player.img}}"/>
 	    </button>
     </div>

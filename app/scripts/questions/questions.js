@@ -1,6 +1,19 @@
 "use strict";
 angular.module('Questions', ['Player', 'Grid', 'Turns'])
-.service('QuestionsService', function($uibModal, $log, $timeout, PlayersService, _) {
+.factory('QuestionModel', function() {
+	var Question = function(title, question, type, points) {
+	   	this.title = title || '';
+	  	this.question = question || '';
+	   	this.type = type || 'single';
+	   	this.points = points || [1];
+	   	if (this.points.constructor !== Array){
+	   		this.points = [points];
+	   	}
+	};
+
+  	return Question;
+})
+.service('QuestionsService', function($uibModal, $log, $timeout, PlayersService, QuestionModel, _) {
 	var service = this;
 
 	this.data = {};
@@ -12,8 +25,22 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
   	this.currentQuestionId = 0;
 
 	this.init = function(questions){
-	  	service.questions = questions;
+	  	service.questions = [];
+	  	for(var i = 0; i < questions.length; ++i){
+	  		service.questions.push(
+	  			new QuestionModel(questions[i].title, 
+	  					questions[i].question, 
+	  					questions[i].type, 
+	  					questions[i].points)
+	  		);
+	  	}
 	  	//PlayersService.changePlayer(service.isCurrentQuestionMultiPlayer());
+	};
+
+	this.reinit = function(){
+		service.currentQuestionId = 0;
+		service.data.roundWon = false;
+  		service.data.roundWinner = undefined;
 	};
 
 	this.getCurrentQuestionId = function(){
@@ -146,10 +173,11 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
     templateUrl: 'scripts/questions/play_btn.html'
   };
 })
-.controller('PlayBtnCtrl', function($scope, $uibModal, $log, QuestionsService) {
+.controller('PlayBtnCtrl', function($scope, $uibModal, $log, $attrs, QuestionsService) {
 	$scope.deactivated = function() {
 		return QuestionsService.getCurrentQuestion() === undefined;
 	}
+	$scope.content = $attrs.content;
 })
 .filter('questionPlayers', function(PlayersService, TurnsService) {
   	return function(input, isMultiplayer) {

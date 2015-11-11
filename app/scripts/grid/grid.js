@@ -33,14 +33,27 @@ angular.module('Grid', ['Player'])
 
 	    // Initialize our grid
 	    for (var x = 0; x < service.size; x++) {
-	    	this.grid[x] = [];
+	    	service.grid[x] = [];
 	    }
 
 	    // Add the players on first cell : 
 		for(var i=0; i < players.length; ++i){
 	  		service.grid[0].push(service.players[i]);
   		}
-	};    
+	}; 
+
+	this.reinit = function(){
+		PlayersService.reinit();
+		// Initialize our grid
+	    for (var x = 0; x < service.size; x++) {
+	    	service.grid[x] = [];
+	    }
+
+	    // Add the players on first cell : 
+		for(var i=0; i < service.players.length; ++i){
+	  		service.grid[0].push(service.players[i]);
+  		}
+	};  
 
 	this.updatePlayerPos = function(id){
 		var player = PlayersService.getPlayer(id);
@@ -54,7 +67,13 @@ angular.module('Grid', ['Player'])
 			}
 		}
 		// Re-insert the current player at the good position
-		service.grid[player.pos].push(player);
+		var new_pos = player.pos;
+		if(new_pos < 0){
+			new_pos = 0;
+		} else if(new_pos > (service.size - 1)){
+			new_pos = service.size - 1
+		}
+		service.grid[new_pos].push(player);
 	};
 
 });
