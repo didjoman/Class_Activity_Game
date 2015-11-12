@@ -1,6 +1,6 @@
 # Class-Activity Game
 
-This project is developped in a view to help the animation a class activity for an english course.
+This project is developped with a view to helping the animation of a class activity for an english course.
 The goal of the activity is to do a quizz by team on the theme of Marvel.
 
 The application provides a turn management module, a point counter, the ability to set players, and a deck of questions.
@@ -33,3 +33,7 @@ When a player marks a point :
 
 End of the game :
 ![Alt text](/app/images/readme/end.png?raw=true "Game Over screen")
+
+## Note on the pictures
+The program was originaly developed for an educational purpose and to be used in front of a restrained audience. 
+The pictures used for this project are NOT my property and are NOT open source. They have been included here only to illustrate the abilities of the software. You MUST ask the authorization of their authors if you want to use them. 
