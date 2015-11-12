@@ -19,5 +19,17 @@ Running `grunt test` will run the unit tests with karma.
 
 
 ## Screenshots
-### Main page :
-![Alt text](/app/images/main.png?raw=true "Main page of the game")
+Main page :
+![Alt text](/app/images/readme/main.png?raw=true "Main page of the game")
+
+Single player questions : 
+![Alt text](/app/images/readme/question_single.png?raw=true "Single player question")
+
+Multi player questions : 
+![Alt text](/app/images/readme/question_group.png?raw=true "Multi player question")
+
+When a player marks a point :
+![Alt text](/app/images/readme/won.png?raw=true "When a player marks a point")
+
+End of the game :
+![Alt text](/app/images/readme/end.png?raw=true "Game Over screen")
