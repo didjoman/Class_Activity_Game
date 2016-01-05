@@ -20,7 +20,7 @@ button:active{
 
 .handwritten{
   font-family: kau;
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 .browsehappy {
@@ -182,7 +182,9 @@ $cell_color: #DAE3E6;
 
 $nice: #A5E342;
 $dark-nice: #8FC439;
+$grey-nice: #B0C48F;
 $bad: #E34254;
+$grey-bad: #C48F96;
 
 $heroes: #42E3D0;
 $villains: #E34255;
@@ -357,6 +359,8 @@ $light-grey: #F7F7F7;
       margin: auto;
       text-align: center;
     }
+
+
     .score-img{
       width: 70px;
       height: 70px;
@@ -471,7 +475,7 @@ $light-grey: #F7F7F7;
 
 
 .small-box{
-  width: 70px;
+  width: 80px;
   height: 90px;
   @include small-box();
 
@@ -487,6 +491,11 @@ $light-grey: #F7F7F7;
   background-image: url('../images/question_background7.png');
   background-position: top left;
   background-repeat: no-repeat;
+
+  h3{
+    font-size: 1.4em;
+  }
+
   .close{
     line-height: 2em;
     margin-top: -20px;
@@ -509,20 +518,6 @@ $light-grey: #F7F7F7;
     }
   }
 }
-  .question.ng-enter, 
-  .question.ng-leave{
-    transition: 0.5s linear all;
-  }
-
-  .question.ng-leave,
-  .question.ng-enter.ng-enter-active{
-    opacity: 1;
-  }
-
-  .question.ng-enter, 
-  .question.ng-leave.ng-leave-active {
-    opacity: 0;
-  }
 
 .modal-body{
   padding-top: 0px;
@@ -531,9 +526,20 @@ $light-grey: #F7F7F7;
   h2{
     float: left;
     margin-right: 20px;
+    text-shadow: 1px 2px 1px rgba(0,0,0,.5);
+    color: $nice !important;
   }
+ 
   .question{
     padding: 20px 0px 0px 20px;
+ 
+    .alert{
+      font-weight: normal;
+      font-family: "Times New Roman", "Times", "times", "serif";
+      font-size: 0.6em;
+      padding: 5px;
+      margin-top: 20px;
+    }
   }
 
 
@@ -571,6 +577,8 @@ $light-grey: #F7F7F7;
 
   h2{
     float: left;
+    text-shadow: 1px 2px 1px rgba(0,0,0,.5);
+    color: $nice !important;
   }
   .points{
       font-size: 3em;

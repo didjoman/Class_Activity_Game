@@ -1,5 +1,5 @@
 <div class="modal-header handwritten">
-	<button type="button" class="close"  ng-click="cancel()" aria-label="Close">
+	<button type="button" class="close"  ng-click="cancelModal()" aria-label="Close">
 		<span aria-hidden="true" >&times;</span>
 	</button>
 	<button class="small-box score-number" ng-repeat="player in players | questionPlayers:question.type" >
@@ -11,36 +11,22 @@
 <div class="modal-body">
 	<br/>
 	<button class="cool-btn btn-sm" ng-click="turnQuestionCard()">
-    	<span class="btn-txt">Show {{answerBtn}}</span>
+		<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+    	<span class="btn-txt">
+    		Show {{answerBtn}}
+    	</span>
 	</button> 
 	<br/>
 	<h2>{{cardTitle}}:</h2>
 	<p class="question handwritten" ng-bind-html="cardContent">
 	</p>
 
-	<nav ng-show="cardTitle == 'Answer' && showPager()" class="nav-pagination">
-	  <ul class="pagination pagination-sm">
-	    <li ng-class="{disabled: !showPagerLeftArrow()}" ng-click="lastAnswerPage($event)">
-	    	<a href="#" aria-label="Previous">
-	    		<span aria-hidden="true">&laquo;</span>
-	    	</a>
-	    </li>
-	    <li ng-repeat="p in question.answer track by $index" 
-	    	ng-click="setAnswerPage($index + 1, $event)" 
-	    	ng-class="{active: answerPage == $index + 1}">
-	    	<a href="#">{{$index + 1}}<span class="sr-only">(current)</span></a>
-	    </li>
-	    <li ng-class="{disabled: !showPagerRightArrow()}" ng-click="nextAnswerPage($event)">
-			<a href="#" aria-label="Next">
-			    <span aria-hidden="true">&raquo;</span>
-			</a>	   
-       </li>
-	  </ul>
-	</nav>
+	<pagerbuttons ng-show="cardTitle == 'Answer'" pages="question.answer" page-content="cardContent">
+	</pagerbuttons>
 </div>
 
 
-<div class="modal-footer">
+<div ng-show="cardTitle == 'Answer'" class="modal-footer">
 	<div ng-if="question.type === 'multi'">
 		<h2>Points:</h2> 
 		<strong class="points">{{question.points[question.points.length - 1]}}</strong>

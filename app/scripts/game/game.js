@@ -14,7 +14,7 @@ angular.module('Game', ['Grid', 'Player', 'Questions', 'Turns'])
   this.roundWinner = QuestionsService.data.roundWinner;
 
   this.play = function(){
-  	QuestionsService.open('lg', TurnsService.newTurn);
+  	QuestionsService.openModal('lg', TurnsService.newTurn);
 	//service.currentPlayer = PlayersService.getCurrentPlayer();
   };
 

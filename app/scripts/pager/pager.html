@@ -1,0 +1,19 @@
+	<nav ng-show="showPager()" class="nav-pagination">
+	  <ul class="pagination pagination-sm">
+	    <li ng-class="{disabled: !showPagerLeftArrow()}" ng-click="lastPage($event)">
+	    	<a href="#" aria-label="Previous">
+	    		<span aria-hidden="true">&laquo;</span>
+	    	</a>
+	    </li>
+	    <li ng-repeat="p in pages track by $index" 
+	    	ng-click="setPage($index + 1, $event)" 
+	    	ng-class="{active: currentPage == $index + 1}">
+	    	<a href="#">{{$index + 1}}<span class="sr-only">(current)</span></a>
+	    </li>
+	    <li ng-class="{disabled: !showPagerRightArrow()}" ng-click="nextPage($event)">
+			<a href="#" aria-label="Next">
+			    <span aria-hidden="true">&raquo;</span>
+			</a>	   
+       </li>
+	  </ul>
+	</nav>

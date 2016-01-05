@@ -1,9 +1,9 @@
 "use strict";
-angular.module('Questions', ['Player', 'Grid', 'Turns'])
-.factory('QuestionModel', function() {
+angular.module('Questions', ['Player', 'Grid', 'Turns', 'Pager'])
+.factory('QuestionModel', function($sce) {
 	var Question = function(title, question, answer, type, points) {
 	   	this.title = title || '';
-	  	this.question = question || '<br />';
+	  	this.question = $sce.trustAsHtml(""+question) || '<br />';
 	  	this.answer = answer || '<br />';
 	   	this.type = type || 'single';
 	   	this.points = points || [1];
@@ -105,7 +105,7 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 				}) !== -1;
 	};
 
-  	this.open = function (size, cb) {
+  	this.openModal = function (size, cb) {
     	var modalInstance = $uibModal.open({
       		animation: service.animationsEnabled,
       		templateUrl: 'scripts/questions/question.html',
@@ -131,8 +131,8 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
   	};
 })
 .controller('QuestionsCtrl', function($scope, $uibModal, $log, QuestionsService) {
-	$scope.open = function(size) {
-		QuestionsService.open(size, angular.noop);
+	$scope.openModal = function(size) {
+		QuestionsService.openModal(size, angular.noop);
 	};
 })
 .controller('QuestionCtrl', 
@@ -150,13 +150,13 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	$scope.turnQuestionCard = function(){
 		if($scope.answerBtn == "Question"){
 			$scope.answerBtn = "Answer";
-			$scope.cardContent = $sce.trustAsHtml(question.question);
+			$scope.cardContent = $sce.trustAsHtml(""+question.question);
 			$scope.cardTitle = "Question";
 		} else {
 			$scope.answerBtn = "Question";
 			console.log(question);
 			if(question.answer.constructor === Array){
-				$scope.answerPage = 1;
+				$scope.currentPage = 1;
 				$scope.cardContent = $sce.trustAsHtml(question.answer[0]);
 			} else {
 				$scope.cardContent = $sce.trustAsHtml(question.answer);
@@ -164,43 +164,6 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 			$scope.cardTitle = "Answer";
 		}
 	};
-
-	/* BEGIN: Pager */
-	$scope.answerPage = 1;
-
-	$scope.nextAnswerPage = function(event){
-		$scope.setAnswerPage($scope.answerPage + 1, event);
-	};
-	$scope.lastAnswerPage = function(event){
-		$scope.setAnswerPage($scope.answerPage - 1, event);
-	};
-
-	$scope.setAnswerPage = function(i, event){
-		if(i >= 1 && i <= question.answer.length){
-			$scope.answerPage = i;
-			$scope.cardContent = $sce.trustAsHtml(question.answer[$scope.answerPage - 1]);
-		}
-		if(event){
-			event.stopPropagation();
-      		event.preventDefault();
-		}
-	};
-
-	$scope.showPager = function(){
-		return question.answer && 
-				question.answer.constructor === Array && 
-				question.answer.length > 1;
-	};
-	
-	$scope.showPagerLeftArrow = function(){
-		return $scope.showPager && $scope.answerPage > 1;
-	};
-	
-	$scope.showPagerRightArrow = function(){
-		return $scope.showPager && $scope.answerPage < question.answer.length;
-	};
-
-	/* END: Pager */
 
 	$scope.skip = function(){
 		QuestionsService.increaseQuestionId();
@@ -223,23 +186,10 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 		$modalInstance.dismiss('cancel');
 	};
 
-	$scope.cancel = function () {
+	$scope.cancelModal = function () {
 		console.log('cancel');
 	  	$modalInstance.dismiss('cancel');
 	};
-})
-.directive('playbtn', function() {
-  return {
-    restrict: 'E',
-    controller: 'PlayBtnCtrl',
-    templateUrl: 'scripts/questions/play_btn.html'
-  };
-})
-.controller('PlayBtnCtrl', function($scope, $uibModal, $log, $attrs, QuestionsService) {
-	$scope.deactivated = function() {
-		return QuestionsService.getCurrentQuestion() === undefined;
-	}
-	$scope.content = $attrs.content;
 })
 .filter('questionPlayers', function(PlayersService, TurnsService) {
   	return function(input, isMultiplayer) {
@@ -258,4 +208,17 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	   	}
 	    return out;
  	};
+})
+.directive('playbtn', function() {
+  return {
+    restrict: 'E',
+    controller: 'PlayBtnCtrl',
+    templateUrl: 'scripts/questions/play_btn.html'
+  };
+})
+.controller('PlayBtnCtrl', function($scope, $uibModal, $log, $attrs, QuestionsService) {
+	$scope.deactivated = function() {
+		return QuestionsService.getCurrentQuestion() === undefined;
+	}
+	$scope.content = $attrs.content;
 });
