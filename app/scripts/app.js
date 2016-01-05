@@ -268,7 +268,6 @@ angular
       type: 'multi'
     },
     {
-    {
       title: 'Famous comic authors',
       question: 'Give the name of a famous comic author.<br />\
                 <div class="alert alert-warning" role="alert"> \
@@ -323,7 +322,13 @@ angular
                      style="width: 500px; display:block; margin: auto; margin-top: 10px;" />',
       type: 'multi'
     },
+    // TODO: the timelines
+    // TODO: Slide why? with the question
     // TODO HERE : 4 or 5 more questions :
+
+    // TODO IRL: Find explanations and documentation about marvel
+    //           Find the 4 comic covers
+    // 
 
 
          // Questions générales sur les comics : nb pages (22-24) (QCM) 15 22 30 48 64 
