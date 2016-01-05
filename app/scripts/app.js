@@ -53,9 +53,26 @@ angular
   ];
 
   var questions = [
-    {title: 'title', question: 'The question ...', type: 'single', points: [1,2,3,4,5,6,10]},
-    {title: 'title2', question: 'The question2 ...', type: 'single', points: 2},
-    {title: 'title3', question: 'The question3 ...', type: 'multi', points: [3]},
+    {title: 'title', 
+    question: 'Find at least 3 of the 5 founders of the X-Men', 
+    answer: ['<p>The 5 founders are: </p>\
+              <ul style="margin: auto; width: 300px;">\
+                <li>Le fauve</li>\
+                <li>Cyclope</li>\
+                <li>Jean Grey</li>\
+                <li>Iceberg</li>\
+                <li>Angel</li>\
+                <li>Charle Xavier</li>\
+              </ul>',
+             '<img src="images/xmen_founders.jpg" \
+                   alt="founders of the xmen." \
+                   style="width: 300px; display:block; margin: auto; margin-top: -50px;" />'
+            ], 
+    type: 'single', 
+    points: [1,2,3]},
+
+    {title: 'title2', question: 'The question2 ...', answer: ['<strong>This is my answer</strong>', 'answer part 2'], type: 'single', points: 2},
+    {title: 'title3', question: 'The question3 ...', answer: '<strong>This is my answer</strong>', type: 'multi', points: [3]},
     {title: 'title4', question: 'The question4 ...', type: 'multi'},
     {title: 'title5', question: 'The question5 ...', type: 'multi'},
     {title: 'title6', question: 'The question6 ...', type: 'multi'},

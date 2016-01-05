@@ -1,9 +1,10 @@
 "use strict";
 angular.module('Questions', ['Player', 'Grid', 'Turns'])
 .factory('QuestionModel', function() {
-	var Question = function(title, question, type, points) {
+	var Question = function(title, question, answer, type, points) {
 	   	this.title = title || '';
-	  	this.question = question || '';
+	  	this.question = question || '<br />';
+	  	this.answer = answer || '<br />';
 	   	this.type = type || 'single';
 	   	this.points = points || [1];
 	   	if (this.points.constructor !== Array){
@@ -30,6 +31,7 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	  		service.questions.push(
 	  			new QuestionModel(questions[i].title, 
 	  					questions[i].question, 
+	  					questions[i].answer, 
 	  					questions[i].type, 
 	  					questions[i].points)
 	  		);
@@ -134,11 +136,71 @@ angular.module('Questions', ['Player', 'Grid', 'Turns'])
 	};
 })
 .controller('QuestionCtrl', 
-	function($scope, $modalInstance, question, cb, QuestionsService, PlayersService, GridService, TurnsService) {
+	function($scope, $sce, $modalInstance, $timeout, question, cb, QuestionsService, PlayersService, GridService, TurnsService) {
 	
 	$scope.question = question;
 	$scope.players = PlayersService.getPlayers();
 	$scope.turn = TurnsService.getCurrentTurn;
+
+	$scope.answerBtn = "Answer";
+	$scope.cardContent = question.question;
+	$scope.cardTitle = "Question";
+
+
+	$scope.turnQuestionCard = function(){
+		if($scope.answerBtn == "Question"){
+			$scope.answerBtn = "Answer";
+			$scope.cardContent = $sce.trustAsHtml(question.question);
+			$scope.cardTitle = "Question";
+		} else {
+			$scope.answerBtn = "Question";
+			console.log(question);
+			if(question.answer.constructor === Array){
+				$scope.answerPage = 1;
+				$scope.cardContent = $sce.trustAsHtml(question.answer[0]);
+			} else {
+				$scope.cardContent = $sce.trustAsHtml(question.answer);
+			}
+			$scope.cardTitle = "Answer";
+		}
+	};
+
+	/* BEGIN: Pager */
+	$scope.answerPage = 1;
+
+	$scope.nextAnswerPage = function(event){
+		$scope.setAnswerPage($scope.answerPage + 1, event);
+	};
+	$scope.lastAnswerPage = function(event){
+		$scope.setAnswerPage($scope.answerPage - 1, event);
+	};
+
+	$scope.setAnswerPage = function(i, event){
+		if(i >= 1 && i <= question.answer.length){
+			$scope.answerPage = i;
+			$scope.cardContent = $sce.trustAsHtml(question.answer[$scope.answerPage - 1]);
+		}
+		if(event){
+			event.stopPropagation();
+      		event.preventDefault();
+		}
+	};
+
+	$scope.showPager = function(){
+		return question.answer && 
+				question.answer.constructor === Array && 
+				question.answer.length > 1;
+	};
+	
+	$scope.showPagerLeftArrow = function(){
+		return $scope.showPager && $scope.answerPage > 1;
+	};
+	
+	$scope.showPagerRightArrow = function(){
+		return $scope.showPager && $scope.answerPage < question.answer.length;
+	};
+
+	/* END: Pager */
 
 	$scope.skip = function(){
 		QuestionsService.increaseQuestionId();

@@ -265,6 +265,11 @@ $light-grey: #F7F7F7;
     opacity: 1;
 }
 
+.cool-btn.btn-sm{
+  font-size: 1em;
+  padding: 0px 10px 0px 10px !important;
+}
+
 .cool-btn{
   /* border: 3px solid white; */
   border-top: 2px solid rgba(255, 255, 255, 0.5);
@@ -504,15 +509,55 @@ $light-grey: #F7F7F7;
     }
   }
 }
+  .question.ng-enter, 
+  .question.ng-leave{
+    transition: 0.5s linear all;
+  }
+
+  .question.ng-leave,
+  .question.ng-enter.ng-enter-active{
+    opacity: 1;
+  }
+
+  .question.ng-enter, 
+  .question.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
 
 .modal-body{
   padding-top: 0px;
+  padding-bottom: 0px;
+
   h2{
     float: left;
     margin-right: 20px;
   }
   .question{
     padding: 20px 0px 0px 20px;
+  }
+
+
+
+  .nav-pagination{
+    text-align: center;
+  }
+  .pagination{
+    margin: 20px 0 10px 0;
+  }
+  .pagination > .active > a{
+    background-color: $nice;
+    border: 1px solid $dark-nice;
+    color: white;
+  }
+
+  .pagination > li > a, .pagination > li > a:hover{
+    color: $dark-nice;
+  }
+
+  .pagination > .disabled > span, .pagination > .disabled > span:hover, 
+  .pagination > .disabled > span:focus, .pagination > .disabled > a, 
+  .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    color: #777 !important;
   }
 }
 
