@@ -167,6 +167,7 @@ angular.module('Questions', ['Player', 'Grid', 'Turns', 'Pager'])
 
 	$scope.skip = function(){
 		QuestionsService.increaseQuestionId();
+		cb(); // Call the callback : (most of time : Turns.endTurn() )
 		$modalInstance.dismiss('cancel');
 	};
 
