@@ -26,7 +26,6 @@ angular.module('Pager', [])
 
 	$scope.setPage = function(i, event){
 		if(i >= 1 && i <= $scope.pages.length){
-			console.log("setpage");
 			$scope.currentPage = i;
 			$scope.pageContent = $sce.trustAsHtml($scope.pages[$scope.currentPage - 1]);
 		}
