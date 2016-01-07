@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('boardgameApp', [
+.module('boardgameApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -19,10 +19,11 @@ angular
     'ui.bootstrap',
     'Game',
     'Grid',
-    'Pager'
-  ])
-  .constant('_', _)
-  .config(function ($routeProvider) {
+    'Pager',
+    'Clock'
+])
+.constant('_', _)
+.config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -38,27 +39,50 @@ angular
         redirectTo: '/'
       });
 
-  })
-  .controller('GameController', function(GameManager) {
-    this.game = GameManager;
+})
+.controller('GameController', function(GameManager, $scope, $timeout) {
+  this.game = GameManager;
 
 
   this.newGame = function(players, gameSize, questions) {
-    this.game.newGame(teams, gameSize, questions);
+    this.game.newGame(players, gameSize, questions);
   };
 
-  // MAIN :
-  var teams = [
-    {name:'Heroes', color:'#199E8F', img:'spiderman.png', winImg: 'spidey_big.png'}, //spidey.png
+  // Changing background ! (I love it ♡♡♡)
+  // Note : The buffer is changed twice, 
+  //(there is a "buffer" background on html and a real background on #global-container)
+  var setBackground = function(i,nbCalled){
+    var timeInterval = 20000; // ms
+    var halfInt = timeInterval / 2;
+
+    if(nbCalled % 2 === 0){
+      document.getElementsByTagName('body')[0].style.backgroundImage = 'url(\'images/background'+i+'.jpg\')';
+      window.setTimeout(function(){ setBackground(((i+1)%20), nbCalled+1); }, halfInt);
+    }
+    else {
+      document.getElementsByTagName('html')[0].style.backgroundImage = 'url(\'images/background'+i+'.jpg\')';
+      window.setTimeout(function(){ setBackground(((i)%20), nbCalled+1); }, halfInt);
+    }
+  };
+
+
+
+
+  /* *************************************************************** */
+  /* ******************** BEGIN: GAME PARAMETERS ******************* */
+  /* *************************************************************** */
+  var SIZE = 10;
+
+  var TEAMS = [
+    {name:'Heroes', color:'#199E8F', img:'spiderman.png', winImg: 'spidey_big.png'}, 
     {name:'Villains', color:'#9E1928', img:'venom2.png', winImg: 'venom_big.png'}
   ];
-     // Couvertures trouver les têtes
-     // Frises chrono
-     // Questions générales sur les comics : nb pages (22-24) (QCM) 15 22 30 48 64 
-     // QG: auteur Stan lee, Jack Kirby, Joe Simon
-     // QG: Comic code authority : 
-     // Name of one magazine : Strange, Titans, Special Strange, Nova, Spidey ...
-  var questions = [  
+
+  /* EXAMPLE OF QUESTIONS FORMAT : 
+    {title: 'title2', question: 'The question2 ...', answer: ['<strong>This is my answer</strong>', 'answer part 2'], type: 'single', points: 2},
+    {title: 'title3', question: 'The question3 ...', answer: '<strong>This is my answer</strong>', type: 'multi', points: [3]},
+  */
+  var QUESTIONS = [  
     {
       title: 'X-men', 
       question: 'Find at least 3 of the 6 founders of the X-Men. \
@@ -196,58 +220,6 @@ angular
       points: [1,2]
     },
     {
-      title: 'Find the super hero', 
-      question: 'The heads on the comics covers have been hidden.<br /> \
-                  Will you be able to find the super hero ?<br /><br /> \
-                  <strong style="display: block; text-align: center;"> \
-                    Give the names of the 2 mysterious heroes. \
-                  </strong><br />\
-                  <img style="display: block; margin: auto; width: 150px; transform: rotate(10deg);" src="images/find_the_head.png" alt="timeline" /> \
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> per hero found. <br /> \
-                </div>', 
-      answer: ['<figure style="display:block; margin-top: -50px; float: left;"> \
-                  <img src="images/marry_jane.jpg" alt="Timeline." style="width: 200px; box-shadow: 3px 3px 2px rgba(0,0,0,.6);" />\
-                  <figcaption>Marry Jane</figcaption> \
-                </figure> \
-                <figure style="display:block; position: relative; left: 50px;  margin-top: -50px;"> \
-                  <img src="images/marry_jane.jpg" alt="Timeline." style="width: 200px; box-shadow: 3px 3px 2px rgba(0,0,0,.6);" />\
-                  <figcaption>Marry Jane</figcaption> \
-                </figure> \
-                <div style="clear: both;"></div>'
-              ], 
-      type: 'single', 
-      points: [1,2]
-    },
-    {
-      title: 'Find the super hero', 
-      question: 'The heads on the comics covers have been hidden.<br /> \
-                  Will you be able to find the super hero ?<br /><br /> \
-                  <strong style="display: block; text-align: center;"> \
-                    Give the names of the 2 mysterious heroes. \
-                  </strong><br />\
-                  <img style="display: block; margin: auto; width: 150px; transform: rotate(10deg);" src="images/find_the_head.png" alt="timeline" /> \
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> per hero found. <br /> \
-                </div>', 
-      answer: ['<figure style="display:block; margin-top: -50px; float: left;"> \
-                  <img src="images/marry_jane.jpg" alt="Timeline." style="width: 200px; box-shadow: 3px 3px 2px rgba(0,0,0,.6);" />\
-                  <figcaption>Marry Jane</figcaption> \
-                </figure> \
-                <figure style="display:block; position: relative; left: 50px;  margin-top: -50px;"> \
-                  <img src="images/marry_jane.jpg" alt="Timeline." style="width: 200px; box-shadow: 3px 3px 2px rgba(0,0,0,.6);" />\
-                  <figcaption>Marry Jane</figcaption> \
-                </figure> \
-                <div style="clear: both;"></div>'
-              ], 
-      type: 'single', 
-      points: [1,2]
-    },
-    {
       title: 'Number of page per comic ?',
       question: 'Guess the average number of pages in a US comic ? <br />\
                 <form style="display: block; width: 200px; margin: auto;"> \
@@ -270,24 +242,6 @@ angular
       type: 'multi'
     },
     {
-      title: 'Famous comic authors',
-      question: 'Give the name of a famous comic author.<br />\
-                <div class="alert alert-warning" role="alert"> \
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
-                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
-                </div>\
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
-                </div>', 
-      answer: 'The most famous comic authors are Stan lee, Jack Kirby, Joe Simon ...\
-              <img src="images/authors.png" \
-                     alt="Comic authors." \
-                     style="width: 500px; display:block; margin: auto; margin-top: 20px;" />',
-      type: 'multi'
-    },
-    {
       title: 'Comics exportation',
       question: 'In France, comics are published in different magazines.<br />\
                 Can you give the name of one of these magazines ?\
@@ -304,6 +258,24 @@ angular
               <img src="images/magazines.png" \
                      alt="French magazines." \
                      style="width: 500px; display:block; margin: auto; margin-top: 10px;" />',
+      type: 'multi'
+    },
+    {
+      title: 'Famous comic authors',
+      question: 'Give the name of a famous Marvel comic author.<br />\
+                <div class="alert alert-warning" role="alert"> \
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
+                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
+                </div>\
+                <div class="alert alert-info" role="alert"> \
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
+                  <strong>Score:</strong> <br />\
+                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
+                </div>', 
+      answer: 'The most famous comic authors are Stan lee, Jack Kirby, Joe Simon ...\
+              <img src="images/authors.png" \
+                     alt="Comic authors." \
+                     style="width: 500px; display:block; margin: auto; margin-top: 20px;" />',
       type: 'multi'
     },
     {
@@ -326,99 +298,8 @@ angular
     },
     {
       title: 'Questions',
-      question: 'Which super vilain took possesion of a human body ? <br />\
-                <em>(Clue: It is an alien...)</em><br /><br />\
-                <form style="display: block; width: 400px; margin: auto;"> \
-                  <div style="float: left"> \
-                    <input type="radio" /> Venom<br /> \
-                    <input type="radio" /> Green Goblin<br /> \
-                  </div> \
-                  <div style="position: relative; left: 50px;"> \
-                    <input type="radio" /> Doctor Doom<br /> \
-                    <input type="radio" /> The Lizard<br /> \
-                  </div> \
-                </form>\
-                <div class="alert alert-warning" role="alert"> \
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
-                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
-                </div>\
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
-                </div>', 
-      answer: 'It is Venom ! <br />\
-              <img src="images/venom_big.png" \
-                     alt="Venom" \
-                     style="width: 300px; display:block; margin: auto; margin-top: -50px;" />',
-      type: 'multi'
-    },
-    {
-      title: 'Questions',
-      question: 'What is the wish of Scarlet Witch on the M-day ?<br /><br />\
-                <form style="display: block; width: 700px; margin: auto;"> \
-                  <div style="float: left"> \
-                    <input type="radio" /> Everybody is a mutant<br /> \
-                    <input type="radio" /> No more mutants<br /> \
-                  </div> \
-                  <div style="position: relative; left: 50px;"> \
-                    <input type="radio" /> Mutants rule the world<br /> \
-                    <input type="radio" /> To become the most powerful mutant<br /> \
-                  </div> \
-                </form>\
-                <div class="alert alert-warning" role="alert"> \
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
-                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
-                </div>\
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
-                </div>', 
-      answer: '> No more mutants. <br />\
-              <img src="images/scarlet_witch.jpg" \
-                     alt="Scarlet Witch" \
-                     style="width: 300px; display:block; margin: auto; margin-top: -50px;" />',
-      type: 'multi'
-    }, 
-    {
-      title: 'Questions',
-      question: 'Which X-Men has the power to charge objects with kinetic energy ?<br /><br />\
-                <form style="display: block; width: 300px; margin: auto;"> \
-                  <div style="float: left"> \
-                    <input type="radio" /> Juggernaut<br /> \
-                    <input type="radio" /> Kitty Pryde<br /> \
-                  </div> \
-                  <div style="position: relative; left: 50px;"> \
-                    <input type="radio" /> Colossus<br /> \
-                    <input type="radio" /> Gambit<br /> \
-                  </div> \
-                </form>\
-                <div class="alert alert-warning" role="alert"> \
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
-                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
-                </div>\
-                <div class="alert alert-info" role="alert"> \
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
-                  <strong>Score:</strong> <br />\
-                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
-                </div>', 
-      answer: '> It is Gambit. <br />\
-              <img src="images/gambit.jpg" \
-                     alt="Gambit" \
-                     style="width: 400px; display:block; margin: auto; margin-top: -50px;" />',
-      type: 'multi'
-    }, 
-    
-
-
-
-
-
-    {
-      title: 'Questions',
       question: 'Which comic series published in 2005 was written by the author of The Walking Dead ?<br /><br />\
-                <form style="display: block; width: 300px; margin: auto;"> \
+                <form style="display: block; width: 500px; margin: auto;"> \
                   <div style="float: left"> \
                     <input type="radio" /> Ms. Marvel<br /> \
                     <input type="radio" /> Civil War<br /> \
@@ -445,15 +326,15 @@ angular
     }, 
     {
       title: 'Questions',
-      question: 'Which of these animals is not an ennemy of Spiderman ?<br /><br />\
-                <form style="display: block; width: 300px; margin: auto;"> \
+      question: 'What is the wish of Scarlet Witch on the M-day ?<br /><br />\
+                <form style="display: block; width: 700px; margin: auto;"> \
                   <div style="float: left"> \
-                    <input type="radio" /> Scorpion<br /> \
-                    <input type="radio" /> Lizard<br /> \
+                    <input type="radio" /> Everybody is a mutant<br /> \
+                    <input type="radio" /> No more mutants<br /> \
                   </div> \
                   <div style="position: relative; left: 50px;"> \
-                    <input type="radio" /> Snake<br /> \
-                    <input type="radio" /> Rhinoceros<br /> \
+                    <input type="radio" /> Mutants rule the world<br /> \
+                    <input type="radio" /> To become the most powerful mutant<br /> \
                   </div> \
                 </form>\
                 <div class="alert alert-warning" role="alert"> \
@@ -465,7 +346,10 @@ angular
                   <strong>Score:</strong> <br />\
                   &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
                 </div>', 
-      answer: '> It is the snake. <br />',
+      answer: '> No more mutants. <br />\
+              <img src="images/scarlet_witch.jpg" \
+                     alt="Scarlet Witch" \
+                     style="width: 300px; display:block; margin: auto; margin-top: -50px;" />',
       type: 'multi'
     }, 
     {
@@ -524,39 +408,100 @@ angular
               </figure>',
       type: 'multi'
     }, 
+    {
+      title: 'Questions',
+      question: 'Which X-Men has the power to charge objects with kinetic energy ?<br /><br />\
+                <form style="display: block; width: 300px; margin: auto;"> \
+                  <div style="float: left"> \
+                    <input type="radio" /> Juggernaut<br /> \
+                    <input type="radio" /> Kitty Pryde<br /> \
+                  </div> \
+                  <div style="position: relative; left: 50px;"> \
+                    <input type="radio" /> Colossus<br /> \
+                    <input type="radio" /> Gambit<br /> \
+                  </div> \
+                </form>\
+                <div class="alert alert-warning" role="alert"> \
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
+                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
+                </div>\
+                <div class="alert alert-info" role="alert"> \
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
+                  <strong>Score:</strong> <br />\
+                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
+                </div>', 
+      answer: '> It is Gambit. <br />\
+              <img src="images/gambit.jpg" \
+                     alt="Gambit" \
+                     style="width: 400px; display:block; margin: auto; margin-top: -50px;" />',
+      type: 'multi'
+    },    
+    {
+      title: 'Questions',
+      question: 'Which of these animals is not an ennemy of Spiderman ?<br /><br />\
+                <form style="display: block; width: 300px; margin: auto;"> \
+                  <div style="float: left"> \
+                    <input type="radio" /> Scorpion<br /> \
+                    <input type="radio" /> Lizard<br /> \
+                  </div> \
+                  <div style="position: relative; left: 50px;"> \
+                    <input type="radio" /> Snake<br /> \
+                    <input type="radio" /> Rhinoceros<br /> \
+                  </div> \
+                </form>\
+                <div class="alert alert-warning" role="alert"> \
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
+                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
+                </div>\
+                <div class="alert alert-info" role="alert"> \
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
+                  <strong>Score:</strong> <br />\
+                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
+                </div>', 
+      answer: '> It is the snake. <br /><br />\
+      <img src="images/spiderman_ennemies.png" \
+                     alt="Spiderman ennemies" \
+                     style="width: 400px; display:block; margin: auto; margin-top: -50px;" />',
+      type: 'multi'
+    }, 
+    {
+      title: 'Questions',
+      question: 'Which super vilain took possesion of a human body ? <br />\
+                <em>(Clue: It is an alien...)</em><br /><br />\
+                <form style="display: block; width: 400px; margin: auto;"> \
+                  <div style="float: left"> \
+                    <input type="radio" /> Venom<br /> \
+                    <input type="radio" /> Green Goblin<br /> \
+                  </div> \
+                  <div style="position: relative; left: 50px;"> \
+                    <input type="radio" /> Doctor Doom<br /> \
+                    <input type="radio" /> The Lizard<br /> \
+                  </div> \
+                </form>\
+                <div class="alert alert-warning" role="alert"> \
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
+                  <strong>Warning!</strong> The first team which gives the correct answer wins ! <br />\
+                </div>\
+                <div class="alert alert-info" role="alert"> \
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> \
+                  <strong>Score:</strong> <br />\
+                  &nbsp;&nbsp;&nbsp; - <strong>1pt.</strong> for the first correct answer. <br /> \
+                </div>', 
+      answer: 'It is Venom ! <br />\
+              <img src="images/venom_big.png" \
+                     alt="Venom" \
+                     style="width: 300px; display:block; margin: auto; margin-top: -50px;" />',
+      type: 'multi'
+    },
 
-    // TODO: Slide why? with the question
-    // TODO IRL: Find explanations and documentation about marvel
-    //           Find the 4 comic covers
-    // Find names of comic series
-    // OK : 4 or 5 more questions :
-    // OK: the timelines
   ];
-  /*
-  {title: 'title2', question: 'The question2 ...', answer: ['<strong>This is my answer</strong>', 'answer part 2'], type: 'single', points: 2},
-    {title: 'title3', question: 'The question3 ...', answer: '<strong>This is my answer</strong>', type: 'multi', points: [3]},
-  */
 
-  var size = 10;
+  /* *************************************************************** */
+  /* ********************* END: GAME PARAMETERS ******************** */
+  /* *************************************************************** */
 
-  this.newGame(teams, size, questions);
 
-  // Changing background ! (I love it ♡♡♡)
-  // Note : The buffer is changed twice, 
-  //(there is a "buffer" background on html and a real background on #global-container)
-  var setBackground = function(i,nbCalled){
-    var timeInterval = 20000; // ms
-    var halfInt = timeInterval / 2;
-
-    if(nbCalled % 2 === 0){
-      document.getElementsByTagName('body')[0].style.backgroundImage = 'url(\'images/background'+i+'.jpg\')';
-      window.setTimeout(function(){ setBackground(((i+1)%20), nbCalled+1); }, halfInt);
-    }
-    else {
-      document.getElementsByTagName('html')[0].style.backgroundImage = 'url(\'images/background'+i+'.jpg\')';
-      window.setTimeout(function(){ setBackground(((i)%20), nbCalled+1); }, halfInt);
-    }
-  };
-
+  /* MAIN : */
+  this.newGame(TEAMS, SIZE, QUESTIONS);
   setBackground(0,0);
 });

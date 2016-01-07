@@ -154,7 +154,6 @@ angular.module('Questions', ['Player', 'Grid', 'Turns', 'Pager'])
 			$scope.cardTitle = "Question";
 		} else {
 			$scope.answerBtn = "Question";
-			console.log(question);
 			if(question.answer.constructor === Array){
 				$scope.currentPage = 1;
 				$scope.cardContent = $sce.trustAsHtml(question.answer[0]);
